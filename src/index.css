@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  background: #0a0a0a;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Signature element: the same "live" pulse used in the rider app while
+   searching for a driver — reused here so the ops dashboard visually
+   reads as the control room for the same product, not a generic admin
+   template. Ringed pulse = "this number is live right now". */
+.live-pulse {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #ff2e2e;
+}
+.live-pulse::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 999px;
+  border: 1.5px solid #ff2e2e;
+  animation: pulse-ring 1.8s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+}
+@keyframes pulse-ring {
+  0% { transform: scale(0.6); opacity: 0.8; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-pulse::before { animation: none; opacity: 0.4; }
+}
+
+::selection {
+  background: rgba(255, 46, 46, 0.35);
+}
