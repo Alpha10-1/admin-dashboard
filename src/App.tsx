@@ -13,6 +13,7 @@ import Rides from "./pages/Rides";
 import Wallets from "./pages/Wallets";
 import Sos from "./pages/Sos";
 import PricingConfig from "./pages/PricingConfig";
+import TestMode from "./pages/TestMode";
 import AppShell from "./components/AppShell";
 
 function Gate({ children }: { children: React.ReactNode }) {
@@ -42,6 +43,7 @@ function AppRoutes() {
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/drivers" element={<Drivers />} />
+                <Route path="/test-mode" element={<TestMode />} />
                 <Route path="/riders" element={<Riders />} />
                 <Route path="/documents" element={<Documents />} />
                 <Route path="/promotions" element={<Promotions />} />
