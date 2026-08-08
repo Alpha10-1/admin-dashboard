@@ -7,6 +7,9 @@ import Promotions from "./pages/Promotions";
 import Admins from "./pages/Admins";
 import Support from "./pages/Support";
 import Drivers from "./pages/Drivers";
+import DriverSubscriptions from "./pages/DriverSubscriptions";
+import Announcements from "./pages/Announcements";
+import Payments from "./pages/Payments";
 import Riders from "./pages/Riders";
 import Content from "./pages/Content";
 import Rides from "./pages/Rides";
@@ -43,6 +46,9 @@ function AppRoutes() {
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/drivers" element={<Drivers />} />
+                <Route path="/driver-subscriptions" element={<DriverSubscriptions />} />
+                <Route path="/announcements" element={<Announcements />} />
+                <Route path="/payments" element={<Payments />} />
                 <Route path="/test-mode" element={<TestMode />} />
                 <Route path="/riders" element={<Riders />} />
                 <Route path="/documents" element={<Documents />} />

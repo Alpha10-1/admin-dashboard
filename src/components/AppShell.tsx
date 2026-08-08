@@ -5,15 +5,18 @@ import { useAuth } from "../context/AuthContext";
 const NAV_ITEMS: { label: string; icon: string; to?: string }[] = [
   { label: "Dashboard", icon: "grid", to: "/" },
   { label: "Drivers", icon: "car", to: "/drivers" },
+  { label: "Subscriptions", icon: "card", to: "/driver-subscriptions" },
   { label: "Test Mode", icon: "flask", to: "/test-mode" },
   { label: "Riders", icon: "user", to: "/riders" },
   { label: "Documents", icon: "file", to: "/documents" },
   { label: "Promotions", icon: "tag", to: "/promotions" },
   { label: "Rides", icon: "route", to: "/rides" },
   { label: "Wallets", icon: "wallet", to: "/wallets" },
+  { label: "Payments", icon: "receipt", to: "/payments" },
   { label: "SOS", icon: "sos", to: "/sos" },
   { label: "Pricing", icon: "dollar", to: "/pricing" },
   { label: "Support", icon: "chat", to: "/support" },
+  { label: "Announcements", icon: "megaphone", to: "/announcements" },
   { label: "Admins", icon: "shield", to: "/admins" },
   { label: "Content", icon: "edit", to: "/content" },
 ];
@@ -34,6 +37,9 @@ function NavIcon({ name }: { name: string }) {
     sos: "M12 2L2 20h20L12 2zM12 9v5M12 17h.01",
     dollar: "M12 2v20M17 6.5c0-1.9-2.2-3.5-5-3.5s-5 1.6-5 3.5 2.2 3 5 3.5c2.8.5 5 1.6 5 3.5s-2.2 3.5-5 3.5-5-1.6-5-3.5",
     flask: "M9 2v6.5L3.5 19a2 2 0 001.8 3h13.4a2 2 0 001.8-3L15 8.5V2M8 2h8M8.5 13h7",
+    card: "M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7zM3 10h18M7 15h4",
+    megaphone: "M3 11v2a2 2 0 002 2h1l3 5V4L6 9H5a2 2 0 00-2 2zM14 8a4 4 0 010 8M17 5a8 8 0 010 14",
+    receipt: "M6 2h12v20l-3-2-3 2-3-2-3 2V2zM8 7h8M8 11h8M8 15h5",
   };
   return (
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
