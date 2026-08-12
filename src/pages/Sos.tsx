@@ -18,6 +18,12 @@ type SosAlert = {
   resolved_at: string | null;
 };
 
+type AlertDetail = {
+  message_template: string | null;
+  message_body: string | null;
+  contacts_notified: number | null;
+};
+
 type Filter = "active" | "resolved" | "all";
 
 export default function Sos() {
@@ -26,6 +32,7 @@ export default function Sos() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [details, setDetails] = useState<Record<string, AlertDetail | "loading">>({});
 
   const load = useCallback(async (f: Filter) => {
     setLoading(true);
@@ -65,6 +72,36 @@ export default function Sos() {
   };
 
   const activeCount = alerts.filter((a) => a.status === "active").length;
+
+  const toggleDetail = useCallback(async (a: SosAlert) => {
+    if (details[a.id]) {
+      setDetails((prev) => {
+        const next = { ...prev };
+        delete next[a.id];
+        return next;
+      });
+      return;
+    }
+    setDetails((prev) => ({ ...prev, [a.id]: "loading" }));
+    try {
+      const { data, error: rpcError } = await supabase.rpc("admin_get_sos_alert_detail", {
+        alert_id_in: a.id,
+      });
+      if (rpcError) throw rpcError;
+      const row = (Array.isArray(data) ? data[0] : data) as AlertDetail | undefined;
+      setDetails((prev) => ({
+        ...prev,
+        [a.id]: row ?? { message_template: null, message_body: null, contacts_notified: null },
+      }));
+    } catch (e: any) {
+      setError(e?.message ?? "Failed to load alert detail.");
+      setDetails((prev) => {
+        const next = { ...prev };
+        delete next[a.id];
+        return next;
+      });
+    }
+  }, [details]);
 
   return (
     <div className="p-8 max-w-4xl">
@@ -146,6 +183,36 @@ export default function Sos() {
                   Triggered {new Date(a.created_at).toLocaleString("en-ZA", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}
                   {a.resolved_at && ` · resolved ${new Date(a.resolved_at).toLocaleString("en-ZA", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}`}
                 </p>
+
+                <button
+                  onClick={() => toggleDetail(a)}
+                  className="text-xs text-textDim hover:text-white mt-2 inline-block"
+                >
+                  {details[a.id] ? "Hide message sent" : "View message sent"}
+                </button>
+
+                {details[a.id] && (
+                  <div className="bg-surfaceRaised border border-border rounded-xl p-3 mt-2 max-w-md">
+                    {details[a.id] === "loading" ? (
+                      <span className="text-textFaint text-xs">Loading…</span>
+                    ) : (
+                      (() => {
+                        const d = details[a.id] as AlertDetail;
+                        return (
+                          <>
+                            <p className="text-textFaint text-[10px] uppercase tracking-wide">
+                              Sent to {d.contacts_notified ?? "—"} contact{d.contacts_notified === 1 ? "" : "s"}
+                              {d.message_template ? ` · ${d.message_template}` : ""}
+                            </p>
+                            <p className="text-textDim text-xs mt-1 whitespace-pre-wrap">
+                              {d.message_body ?? "No message recorded for this alert."}
+                            </p>
+                          </>
+                        );
+                      })()
+                    )}
+                  </div>
+                )}
               </div>
 
               {a.status === "active" && (

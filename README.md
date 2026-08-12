@@ -44,8 +44,29 @@ marketing site.
     set), for staff who've never used the rider/driver app at all
   Either way, you can also revoke access (not your own — that's blocked
   server-side, not just hidden in the UI)
+- **Rides**: browse all rides, filterable by rider/driver
+- **Ratings**: flagged-driver review queue — drivers with 5+ ratings and
+  a sub-4.0 average are auto-flagged (see `20260808120000_driver_ratings.sql`).
+  Drill into a driver to see their full rating history (stars, comment,
+  which rider left it) and clear the flag once reviewed. Also searchable
+  across all rated drivers, not just flagged ones.
+- **Wallets**: searchable rider/driver wallet directory, balance and
+  transaction history, manual credit/debit adjustments
+- **Payouts**: review driver payout requests (amount + R5 fee deducted
+  from their wallet on request) — Approve or Reject (refunds the driver)
+  a pending request, then Mark Paid once you've sent the money via EFT
+  using the bank details shown on the request
+- **Payments**: card verification and ride card-reservation monitoring
+- **Driver Subscriptions**: review and manage driver subscription status
+- **Test Mode**: toggle test-mode access for specific driver accounts
+- **SOS**: live safety alert queue with the actual message that was
+  sent and how many emergency contacts were notified per alert
+  (`View message sent`), backed by `20260812150000_admin_sos_alert_detail.sql`
+- **Pricing**: configure ride pricing
+- **Announcements**: broadcast in-app announcements
 
-**Rides** is the only thing still shown in the sidebar marked "Soon".
+Everything above is routed and wired to Supabase — nothing in the
+sidebar is placeholder/"Soon" at this point.
 
 ## Setup
 
@@ -58,12 +79,13 @@ npm run dev
 ```
 
 Requires running the SQL migrations in the mobile app's
-`supabase/migrations/` folder first, in order — specifically
-`0016` through `0021`. Without `0016`/`0017`, dashboard stats fail with a
-permissions error; without `0018`, Documents and Admins won't work;
-without `0019`, Promotions won't work; without `0020`, Support, Drivers,
-Riders, and suspension enforcement won't work; without `0021`, Content
-won't work.
+`supabase/migrations/` folder first, in order — run all of them with
+`supabase db push`. The **Payouts** screen specifically needs
+`20260812120000_driver_payout_requests.sql` and
+`20260812130000_admin_list_payout_requests.sql` applied. The **Ratings**
+screen needs `20260808120000_driver_ratings.sql` (adds the columns/trigger
+logic) and `20260812140000_admin_driver_ratings_review.sql` (adds the
+admin read/clear-flag RPCs) applied.
 
 **Also deploy the second Edge Function** for creating brand-new admin
 accounts (email + password, no prior app signup):

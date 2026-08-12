@@ -8,6 +8,8 @@ import Admins from "./pages/Admins";
 import Support from "./pages/Support";
 import Drivers from "./pages/Drivers";
 import DriverSubscriptions from "./pages/DriverSubscriptions";
+import Payouts from "./pages/Payouts";
+import Ratings from "./pages/Ratings";
 import Announcements from "./pages/Announcements";
 import Payments from "./pages/Payments";
 import Riders from "./pages/Riders";
@@ -46,6 +48,7 @@ function AppRoutes() {
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/drivers" element={<Drivers />} />
+                <Route path="/ratings" element={<Ratings />} />
                 <Route path="/driver-subscriptions" element={<DriverSubscriptions />} />
                 <Route path="/announcements" element={<Announcements />} />
                 <Route path="/payments" element={<Payments />} />
@@ -55,6 +58,7 @@ function AppRoutes() {
                 <Route path="/promotions" element={<Promotions />} />
                 <Route path="/rides" element={<Rides />} />
                 <Route path="/wallets" element={<Wallets />} />
+                <Route path="/payouts" element={<Payouts />} />
                 <Route path="/sos" element={<Sos />} />
                 <Route path="/pricing" element={<PricingConfig />} />
                 <Route path="/support" element={<Support />} />
